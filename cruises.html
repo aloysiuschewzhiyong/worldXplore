@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WorldXplore</title>
+        <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <style>
+            body{
+                background-color: #FFFFFF;
+                transition: all 0.5s; 
+                margin:0;
+                padding:0;
+                font-family: poppins;
+                display:flex;
+                flex-direction: column;
+                justify-content: center;
+                overflow-x: hidden; 
+                overflow-y: auto;
+
+
+            }
+            body::-webkit-scrollbar {
+                display:none;
+            }
+
+            li {
+                list-style: none;
+            }
+
+            a {
+                text-decoration: none;
+            }
+
+            .header{
+                z-index: 99999999;
+            }
+
+            .navbar {
+                position: fixed; /* Set position to fixed */
+                top: 0; /* Adjust as needed based on your design */
+                left: 0;
+                right: 0;
+                background-color: #fff; /* Add a background color if needed */
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.5rem 1rem;
+            }
+
+            .hamburger {
+                display: none;
+            }
+
+            .bar {
+                display: block;
+                width: 25px;
+                height: 3px;
+                margin: 5px auto;
+                -webkit-transition: all 0.3s ease-in-out;
+                transition: all 0.3s ease-in-out;
+                background-color: #101010;
+                border-radius:100px;
+            }
+
+            .nav-menu {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .nav-item {
+                margin-left: 3rem;
+            }
+
+            .nav-link{
+                font-size: 1.2rem;
+                font-weight: 400;
+                color: #000000;
+            }
+
+            .nav-link:hover{
+                color: #00b0ff;
+            }
+
+            .nav-logo {
+                width:69px;
+            }
+            
+            .dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #fff; 
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 5px;
+}
+
+.dropdown-menu li {
+    padding: 10px;
+    text-align: left;
+    color:#000000;
+}
+
+
+.nav-item:hover .dropdown-menu {
+    display: block;
+}
+
+            @media only screen and (max-width: 768px) {
+                .nav-menu {
+                    position: fixed;
+                    left: -200%;
+                    top: 5rem;
+                    flex-direction: column;
+                    background-color: #fff;
+                    width: 100%;
+                    border-radius: 10px;
+                    text-align: center;
+                    transition: 0.3s;
+                    box-shadow:
+                        0 10px 27px rgba(0, 0, 0, 0.05);
+                }
+
+                .nav-menu.active {
+                    left: 0;
+                    padding: 0;
+                    margin:0;
+                    width:100vw;
+                }
+
+                .nav-item {
+                    margin: 2.5rem 0;
+                }
+
+                .hamburger {
+                    display: block;
+                    cursor: pointer;
+                }
+
+
+                .hamburger.active .bar:nth-child(2) {
+                    opacity: 0;
+                }
+
+                .hamburger.active .bar:nth-child(1) {
+                    transform: translateY(8px) rotate(45deg);
+                }
+
+                .hamburger.active .bar:nth-child(3) {
+                    transform: translateY(-8px) rotate(-45deg);
+                }
+
+            }
+
+
+
+            h1{
+                font-size: 4.313rem;
+                margin:20px;
+            }
+
+            h2{
+                text-align: center;
+                font-size: 3.5rem;
+                margin:20px;
+            }
+
+            h3{
+                font-size:2.5rem;
+            }
+
+
+            button {
+                position: relative;
+                display: inline-block;
+                margin-top: 15px;
+                padding: 15px 30px;
+                text-align: center;
+                font-size: 1rem;
+                letter-spacing: 1px;
+                text-decoration: none;
+                color: #00b0ff;
+                background: transparent;
+                cursor: pointer;
+                transition: ease-out 0.5s;
+                border: 2px solid #00b0ff;
+                border-radius: 20px;
+                box-shadow: inset 0 0 0 0 #00b0ff;
+            }
+
+            button:hover {
+                color: white;
+                box-shadow: inset 0 -100px 0 0 #00b0ff;
+            }
+
+            button:active {
+                transform: scale(0.9);
+            }
+
+
+            video {
+                max-width:100vw;
+                width: 100%;
+                height: auto;
+            }
+
+            #pokemon{
+                max-width:100vw;
+                width: 100%;
+            }
+
+
+            .video-container {
+                width: 100vw; 
+                height: 50vh; 
+                overflow: hidden;
+                position: relative;
+                z-index:-999;
+
+            }
+
+            .video-container video {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+
+            }
+
+
+            article {
+                flex: 0 0 auto;
+                width:20vw;
+                border-radius: 20px;
+                margin: 30px;
+                padding: 20px;
+                background-color: #f9f9f9;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            article:hover{
+                transform: scale(1.05);
+                transition: transform 0.3s; 
+            }
+
+            article img {
+                padding:0px;
+                width: 100%;
+                object-fit: cover;
+            }
+
+            article h3 {
+                font-size: 1.2rem;
+                margin: 10px 0;
+            }
+
+            article p {
+                font-size: 1rem;
+            }
+
+            article a {
+                text-decoration: none;
+                color: #00b0ff;
+            }
+
+            section{
+                margin-top:30px; margin-bottom:30px;
+                max-width:100%;
+                padding:30px;
+                display:flex;
+                justify-content: center;
+                gap:20px;
+                flex-wrap: wrap;
+                align-items: center; 
+
+
+            }
+
+            .footer{
+                bottom:0;
+                width:auto;
+                padding:40px 0;
+                background-color: #fff;
+                height:auto;
+                flex-direction: column;
+
+            }
+
+            .footer .social{
+                text-align:center;
+                padding-bottom:25px;
+                color:#4b4c4d;
+
+            }
+            .footer .social a{
+                text-align:center;
+                font-size:24px;
+                color:inherit;
+                border:1px solid #ccc;
+                width:40px;
+                height:40px;
+                line-height:38px;
+                display:inline-block;
+                border-radius:50%;
+                margin:0.8px;
+                opacity:0.75;
+
+            }
+
+            .footer .social a:hover{
+                opacity:0.9;
+
+
+            }
+
+            .footer ul{
+
+                margin-top:0;
+                padding:0;
+                list-style:none;
+                font-size:18px;
+                line-height:1.6;
+                margin-bottom:0;
+                text-align:center;
+
+            }
+
+            .footer ul li a{
+                margin:10px;
+                color:black;
+                text-decoration:none;
+                opacity:0.8;
+
+            }
+
+            .footer ul li{
+                display: inline-block;
+                padding: 0 15;
+
+            }
+
+            .footer ul li a:hover{
+                font-weight: bold;
+
+            }
+
+            .footer .copyright{
+                margin-top:15px;
+                text-align:center;
+                font-size:13px;
+                color:#aaa;
+            }
+
+            .nav-logo:hover{
+                transform: rotate(720deg);
+                transition: all 0.5s;
+            }
+
+
+
+            .fade-out-overlay {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 200px; 
+                background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+                pointer-events: none;
+                z-index: 2;
+                transform: translateZ(0);
+            }
+
+
+            #sauce {
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+            }
+
+            .idk {
+                width: 69vw;
+                height:30vw;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .left,
+            .right {
+                flex: 1; 
+            }
+
+            @media (prefers-reduced-motion: no-preference) {
+                .hidden {
+                    transition: all 1s;
+                }
+
+                .hidden{
+                    opacity:0;
+                    filter:blur(3px);
+                    transition: all 1s;
+                }
+
+                .hiddenUp{
+                    opacity:0;
+                    filter:blur(2px);
+                    transform:translateY(+50%);
+                    transition: all 1s;
+                }
+
+                .hiddenLeft{
+                    opacity:0;
+                    filter:blur(2px);
+                    transform:translateX(-50%);
+                    transition: all 1s;
+                }
+
+                .hiddenRight{
+                    opacity:0;
+                    filter:blur(2px);
+                    transform:translateX(+50%);
+                    transition: all 1s;
+                }
+
+                .show {
+                    opacity: 1;
+                    filter: blur(0);
+                    transform: translateX(0) translateY(0);
+                }
+
+                .homeArticle:nth-child(2){
+                    transition-delay: 100ms;
+                }
+                .homeArticle:nth-child(3){
+                    transition-delay: 200ms;
+                }
+
+                .BRUHMOMENT{
+                    font-size:1.5rem;
+                }
+
+
+                @media (max-width: 768px) {
+
+
+                    h1{
+                        align-content: flex-start;
+                        font-size:2.5rem;
+                        margin-top:10vh;
+                        margin-bottom:15vh;
+                    }
+
+                    h2{
+                        font-size:2rem;
+                    }
+
+                    h3{
+                        font-size:1.5rem;
+                    }
+
+                    section{
+                        flex-direction:column;
+                        justify-content: center;
+                    }
+
+
+                    article {
+                        width:50vw;
+                    }
+
+                    .idk {
+                        flex-direction:column;
+                        margin-bottom: 15vh;
+
+                    }
+
+                    #rediscover{
+                        flex-direction:column-reverse;
+                    }
+
+
+                    video{
+                        display:none;
+                    } 
+
+                    .video-container {
+                        width: 100vw; 
+                        height: 40vh; 
+                        overflow: hidden;
+                        position: relative;
+                        z-index:-999;
+
+                    }
+
+
+                    .fade-out-overlay {
+                        height: 200px;
+                    }
+
+                    .BRUHMOMENT{
+                        font-size:1rem;
+                    }
+
+                }
+
+
+                #contact {
+                    padding: 30px;
+                    margin-left: auto;
+                    margin-right: auto;
+                    display: flex; /* Use flexbox to align items horizontally */
+                    justify-content: center; /* Center the items horizontally */
+                    align-items: center; /* Center the items vertically */
+                    flex-direction: column; /* Stack items vertically on small screens */
+                }
+
+                form {
+                    max-width: 600px;
+                    margin: 0 auto;
+                }
+
+                label {
+                    display: block;
+                    margin-bottom: 8px;
+                }
+
+
+                #contact {
+                    padding: 30px;
+                    margin-left: auto;
+                    margin-right: auto;
+                    display: flex; /* Use flexbox to align items horizontally */
+                    justify-content: center; /* Center the items horizontally */
+                    align-items: center; /* Center the items vertically */
+                    flex-direction: column; /* Stack items vertically on small screens */
+                }
+
+                form {
+                    max-width: 600px;
+                    margin: 0 auto;
+                }
+
+                label {
+                    display: block;
+                    margin-bottom: 8px;
+                }
+
+                input,
+                textarea {
+                    width: 100%;
+                    padding: 10px;
+                    margin-bottom: 16px;
+                    box-sizing: border-box;
+                    border-radius:20px;
+                    resize:none
+                }
+
+                .wrapper{
+                    width:100%;
+                    display: flex;
+                    overflow-x: auto;
+                    -webkit-overflow-scrolling: touch;
+                    margin: 0;
+                    scrollbar-width: none; 
+                    -ms-overflow-style: none; 
+                }
+
+                ::-webkit-scrollbar {
+                    width:0;
+                }
+
+
+
+
+            </style>
+        </head>
+        <body>
+            <script>
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach((entry) => {
+                            console.log(entry);
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('show');
+                            } else {
+                                entry.target.classList.remove('show');
+                            }
+                        });
+                    });
+
+                    const hiddenElements = document.querySelectorAll('.hidden');
+                    hiddenElements.forEach((el) => observer.observe(el));
+                });
+
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach((entry) => {
+                            console.log(entry);
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('show');
+                            } else {
+                                entry.target.classList.remove('show');
+                            }
+                        });
+                    });
+
+                    const hiddenElements = document.querySelectorAll('.hiddenLeft');
+                    hiddenElements.forEach((el) => observer.observe(el));
+                });
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach((entry) => {
+                            console.log(entry);
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('show');
+                            } else {
+                                entry.target.classList.remove('show');
+                            }
+                        });
+                    });
+
+                    const hiddenElements = document.querySelectorAll('.hiddenRight');
+                    hiddenElements.forEach((el) => observer.observe(el));
+                });
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach((entry) => {
+                            console.log(entry);
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('show');
+                            } else {
+                                entry.target.classList.remove('show');
+                            }
+                        });
+                    });
+
+                    const hiddenElements = document.querySelectorAll('.hiddenUp');
+                    hiddenElements.forEach((el) => observer.observe(el));
+                });
+
+                document.addEventListener("DOMContentLoaded", function () {
+                    // Smooth scrolling for anchor links
+                    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                        anchor.addEventListener('click', function (e) {
+                            e.preventDefault();
+
+                            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                                behavior: 'smooth'
+                            });
+                        });
+                    });
+
+                    const slider = document.querySelector('.wrapper');
+                    let isDown = false;
+                    let startX;
+                    let scrollLeft;
+
+                    slider.addEventListener('mousedown', (e) => {
+                        isDown = true;
+                        slider.classList.add('active');
+                        startX = e.pageX - slider.offsetLeft;
+                        scrollLeft = slider.scrollLeft;
+                    });
+
+                    slider.addEventListener('mouseleave', () => {
+                        isDown = false;
+                        slider.classList.remove('active');
+                    });
+
+                    slider.addEventListener('mouseup', () => {
+                        isDown = false;
+                        slider.classList.remove('active');
+                    });
+
+                    slider.addEventListener('mousemove', (e) => {
+                        if (!isDown)
+                            return;
+                        e.preventDefault();
+                        const x = e.pageX - slider.offsetLeft;
+                        const walk = (x - startX) * 2.5;
+                        slider.scrollLeft = scrollLeft - walk;
+                    });
+                });
+            </script>
+            <header class="header">
+
+                 <nav class="navbar">
+            <a href="index.html"><div class="nav-logo">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 98.46 98.69">
+                                <defs>
+                                <style>
+                                    .cls-1 {
+                                        fill: #65bc46;
+                                    }
+
+                                    .cls-2 {
+                                        fill: #a9d052;
+                                        stroke-width: 1.5px;
+                                    }
+
+                                    .cls-2, .cls-3, .cls-4, .cls-5 {
+                                        stroke: #1c75bc;
+                                        stroke-miterlimit: 10;
+                                    }
+
+                                    .cls-3 {
+                                        fill: #8dc63f;
+                                    }
+
+                                    .cls-6 {
+                                        fill: #54b6e7;
+                                    }
+
+                                    .cls-7 {
+                                        fill: #6cbe45;
+                                    }
+
+                                    .cls-4 {
+                                        fill: #7bcaf1;
+                                    }
+
+                                    .cls-4, .cls-5 {
+                                        stroke-width: 3px;
+                                    }
+
+                                    .cls-5 {
+                                        fill: none;
+                                    }
+                                </style>
+                                </defs>
+                                <g id="Layer_2" data-name="Layer 2">
+                                <path class="cls-4" d="M74.97,8.53c30.11,20.57,20.55,52.83,20.55,52.83,0,0-7.77,28.42-34.46,34.44-26.7,6.02-42.88-9.36-42.88-9.36,0,0-28.48-28.25-11-58.51C24.65-2.34,52.8,1.68,52.8,1.68c0,0,12.14,0,22.17,6.85Z"/>
+                                <path class="cls-3" d="M9.4,25.99S24.21,4.32,33.58,4.69c6.82,.26,8.15,4.65,8.36,7.01,.08,.83-.09,1.67-.48,2.39l-1.08,1.99c-.68,1.25-1.94,1.99-3.27,1.91-2.32-.14-4.83-3.03-4.94-4.2-.1-1.05-3.7,3.23-6.01,4.94-1.5,1.1-1.98,3.16-1.39,5.02,.68,2.11-.12,5.01-7.85,6.8-13.26,3.07-7.53-4.55-7.53-4.55Z"/>
+                                <path class="cls-3" d="M43.75,1.9s30.23-3.35,38.49,12.51-11.48,7.5-11.48,7.5c0,0-14.08-6.35-22.98,1-6.01,4.97-4.57-2.11-3-7.23,.69-2.24,1.81-4.28,3.1-6.21s2.07-5.15-4.14-7.58Z"/>
+                                <path class="cls-3" d="M26.76,92.07s.96-3.96,11.97-1.29c0,0,5.66-4.51,1.62-12.87-4.05-8.36,18.61-9.36,18.61-9.36,0,0,17.61,13.5,28.79,8.59,0,0-11.24,15.86-23.9,17.93-12.66,2.07-38.31-1.66-37.08-3Z"/>
+                                <g id="Layer_3" data-name="Layer 3">
+                                <path class="cls-2" d="M58.84,24.41s-2.56,8.4,9.22,23.24c0,0-.84,3.45-7.24,9.66-6.4,6.22-1.22,6.91-1.22,6.91,0,0,10.89,2.6,12.08-11.42s5.39,10.28,5.41,10.35c0,0,0,0,0,0,.05,0,9.18-.03,3.22-17.36,0,0,0,0,0,0,0,0-.64-8.85,4.38-13.7s-5.99-4.35-5.99-4.35c0,0-5.93,7.25-6.99,10.87-.82,2.81-1.51-7.36-2.84-8.03,0,0,0,0,0,0l-2.77-3.34c-1.9-3.22-2.95-2.27-7.26-2.84Z"/>
+                                <path class="cls-2" d="M13.79,37.24s4.11-7.26,9.45-2.8,3.99,15.55,3.99,15.55c0,0,.55,1,1.14,.22s-1.06-9.9,3.27-13.62c4.33-3.71,4.22-3.55,4.22-3.55,0,0,4.6-.5,4.78,3.28s2.35,15.49,2.35,15.49c0,0,1.19,1.25,1.21-1.29s1.53-15.83,3.75-17.91,4.48-1.96,4.48-1.96c0,0,1.97-1.45,1.94,.61s1.84,32.39-3.53,34.03c-5.37,1.64-10.79,1.28-10.79,1.28,0,0-4.39-14.69-4.28-16.75s-1.88,4.14-4.18,12.32-9.94,3.34-9.94,3.34c0,0-.42-19.37-7.85-28.25Z"/>
+                                </g>
+                                <path class="cls-5" d="M74.97,8.53c30.11,20.57,20.55,52.83,20.55,52.83,0,0-7.77,28.42-34.46,34.44-26.7,6.02-42.88-9.36-42.88-9.36,0,0-28.48-28.25-11-58.51C24.65-2.34,52.8,1.68,52.8,1.68c0,0,12.14,0,22.17,6.85Z"/>
+                                <path class="cls-7" d="M11.22,28.54s9.06,2.73,10.19-3.06,5.66-14.21,8.85-13.76,4.69,3.4,6.31,2.06,2.21-5.13,2.21-5.13c0,0-3.18-1.73-5.29-.72S12.3,20.18,11.22,28.54Z"/>
+                                </g>
+                                <g id="Layer_4" data-name="Layer 4">
+                                <path class="cls-6" d="M5.66,41.74c.25-1.29,1.56-2.1,2.77-1.7,.93,.31,2.05,.43,3.11-.08,2.43-1.17,7.93,31.26,8.41,33.1,.26,.98-.78,1.77-1.8,2.3s-2.16,.21-2.8-.71c-3.16-4.53-12.35-19.18-9.71-32.91Z"/>
+                                <path class="cls-7" d="M41.96,91.61s6.31-7.19,.65-15.21c0,0,12.3-6.19,16.83-3.01s17.31,9.29,19.9,8.66c2.59-.63-20.71,14.91-37.38,9.56Z"/>
+                                <path class="cls-1" d="M52.32,4.68s-5.82,12.54-4.85,14.55,8.9-7.02,25.08,0,0-8.36,0-8.36c0,0-12.3-7.2-20.23-6.19Z"/>
+                                <path class="cls-6" d="M27.24,31.27l1.14,2.51s6.79-4.18,8.24-3.68,6.79,3.01,6.79,3.01c0,0,1.94-4.01,3.4-3.93s6.47-3.09,6.47-3.09l1.94-3.01s-2.11-1.5-11.81,4.68c0,0-4.37-4.02-2.75-6.69s-11,3.18-9.22-3.09l-3.56,3.09s3.72,5.69-.65,10.2Z"/>
+                                <path class="cls-6" d="M22.06,83.93l5.18,3.51s9.87-.84,10.19,0,2.59-5.68,0-9.19,2.91-6.85,2.91-6.85c0,0-5.02-6.52-4.85-8.36s-1.13,5.68-3.07,5.52c-1.94-.17-7.84-.84-5.7,2.34s2.95,8.19-4.66,13.04Z"/>
+                                <path class="cls-6" d="M57.23,34.44v19.89s5.12-5.68,4.64-8.02-4.64-11.87-4.64-11.87Z"/>
+                                <path class="cls-6" d="M63.84,66.41s12.78,15.33,18.61,8.25c5.82-7.08,7.93-13.6,7.93-13.6,0,0,2.43-22.74-1.62-28.92,0,0-5.36,1.7-5.43,11.89-.07,10.18,1.73,11.45,1.73,11.45,0,0,1.12,2.92-.99,5.26s-5.26,4.18-6.6,3.85-4.24-1.92-4.41-2.3-3.72,4.64-9.22,4.13Z"/>
+                                </g>
+                                </svg>
+
+                            </div></a>
+            <ul class="nav-menu">
+                <li class="nav-item dropdown">
+    <a href="#" class="nav-link">Package Tours <span class="arrow">&#9662;</span></a>
+    <ul class="dropdown-menu">
+        <li><a href="#">Japan tour</a></li>
+        <li><a href="#">Oui Oui Baguette</a></li>
+        <li><a href="#">Kimchi land onionsayhow</a></li>
+    </ul>
+</li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Rediscover Singapore</a>
+                </li>
+                <li class="nav-item">
+                    <a href="cruises.html" class="nav-link">Cruises</a>
+                </li>
+                <li class="nav-item">
+                    <a href="contact.html" class="nav-link">Contact us</a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+
+     
+            </nav>
+            </header>
+            <div class="video-container">
+                <video width="auto" autoplay muted loop>
+                    <source src="videos/video (1080p).mp4" type="video/mp4">
+                </video>
+
+                <img id="pokemon" src="images/vid pic.JPG" alt="pic of vid">
+                <div class="fade-out-overlay"></div>
+            </div>
+
+
+
+
+            <section id="bruh" style="margin: 30px 0px">
+                <h1 class="hiddenUp">See cruises</h1>
+
+                <div class="idk">
+
+                    <div class="left hiddenLeft"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" data-name="Layer 1" width="90%" height="90%" viewBox="0 0 795.30964 524.87772"><circle cx="229.82018" cy="128.93492" r="125" fill="#00b0ff"/><path d="M741.59259,225.54924c-.84172-3.30377-3.58023-5.77558-6.43582-7.63822s-5.99805-3.35964-8.43669-5.74274c-2.438-2.383-4.07784-6.00667-2.946-9.22263,1.37576-3.90855,5.96032-5.47043,9.96791-6.5242a1077.20106,1077.20106,0,0,0-110.43018-6.16059,6.64252,6.64252,0,0,0-11.9883,3.96116V312.78577h13.32177V239.95414q47.46369.115,94.928.22994c5.12316.01236,10.45382-.02025,15.05984-2.264C739.23981,235.67644,742.85777,230.51417,741.59259,225.54924Z" transform="translate(-202.34518 -187.56114)" fill="#ccc"/><path d="M815.14658,438.01041V398.0451h30.64007a41.29722,41.29722,0,0,0,41.29748-41.29741v-.00008h-233.131a18.65051,18.65051,0,0,1,18.65047-18.65047H835.12923v-4.63636c0-15.83294-10.96053-28.66807-24.4807-28.66807H608.09324c-31.19688,0-59.69949,20.09413-74.40157,51.9549H501.0722a10.65616,10.65616,0,0,0-7.41544,3.00285l-20.62727,19.98265a10.65735,10.65735,0,0,0,7.41543,18.312h25.6366v39.96531H388.30745a10.65761,10.65761,0,0,0-7.96574,3.57705l-23.68322,26.6433a10.65764,10.65764,0,0,0,7.96575,17.738H437.8699a10.65626,10.65626,0,0,1,9.03513,5.006l12.85342,20.55093a10.65766,10.65766,0,0,1-8.21357,16.27713l-158.864,12.28946a10.65719,10.65719,0,0,0-8.95967,6.39557l-33.64073,77.7938a10.65736,10.65736,0,0,0,9.78188,14.88747H790.67563a213.55436,213.55436,0,0,0,38.76518-3.53453c94.76865-17.48621,162.8853-101.25578,162.8853-197.62411v-.00008ZM546.04683,398.0451H775.18127v39.96531H546.04683Zm333.04424,85.25941a42.62941,42.62941,0,0,1-42.62966,42.62958H492.75975V525.934a42.62983,42.62983,0,0,1,42.62967-42.62959H879.09107Z" transform="translate(-202.34518 -187.56114)" fill="#3f3d56"/><path d="M823.13964,504.61926H538.05377a6.66872,6.66872,0,0,0-6.66088,6.66088v15.98612H829.80053V511.28014A6.66873,6.66873,0,0,0,823.13964,504.61926ZM594.0052,507.28361h31.43756v17.3183H594.0052Zm-2.66435,17.3183H559.90329v-17.3183h31.43756Zm36.76626-17.3183H659.544v17.3183H628.10711Zm34.10126,0h31.43691v17.3183H662.20837Zm34.10126,0h31.43755v17.3183H696.30963Zm34.10191,0h31.43755v17.3183H730.41154Zm34.10191,0H795.951v17.3183H764.51345Zm-230.45621,3.99653a4.0009,4.0009,0,0,1,3.99653-3.99653h19.18517v17.3183h-23.1817Zm293.07893,13.32177H798.61536v-17.3183h24.52428a4.00089,4.00089,0,0,1,3.99653,3.99653Z" transform="translate(-202.34518 -187.56114)" fill="#3f3d56"/><rect x="584.82569" y="129.22117" width="17.3183" height="71.93756" fill="#3f3d56"/><path d="M486.09887,643.16566H206.34171a3.99653,3.99653,0,1,1,0-7.99306H486.09887a3.99653,3.99653,0,1,1,0,7.99306Z" transform="translate(-202.34518 -187.56114)" fill="#ccc"/><path d="M362.20641,667.14484H246.307a3.99653,3.99653,0,1,1,0-7.99306H362.20641a3.99653,3.99653,0,0,1,0,7.99306Z" transform="translate(-202.34518 -187.56114)" fill="#ccc"/><path d="M873.76237,643.16566H594.0052a3.99653,3.99653,0,1,1,0-7.99306H873.76237a3.99653,3.99653,0,1,1,0,7.99306Z" transform="translate(-202.34518 -187.56114)" fill="#ccc"/><path d="M701.91154,667.14484H422.15438a3.99653,3.99653,0,1,1,0-7.99306H701.91154a3.99653,3.99653,0,1,1,0,7.99306Z" transform="translate(-202.34518 -187.56114)" fill="#ccc"/><path d="M486.09887,688.45968H206.34171a3.99654,3.99654,0,0,1,0-7.99307H486.09887a3.99654,3.99654,0,0,1,0,7.99307Z" transform="translate(-202.34518 -187.56114)" fill="#ccc"/><path d="M653.95317,712.43886H538.05377a3.99653,3.99653,0,0,1,0-7.99306h115.8994a3.99653,3.99653,0,0,1,0,7.99306Z" transform="translate(-202.34518 -187.56114)" fill="#ccc"/><path d="M403.5039,712.43886H287.6045a3.99653,3.99653,0,1,1,0-7.99306H403.5039a3.99653,3.99653,0,0,1,0,7.99306Z" transform="translate(-202.34518 -187.56114)" fill="#ccc"/><path d="M873.76237,688.45968H594.0052a3.99653,3.99653,0,0,1,0-7.99307H873.76237a3.99654,3.99654,0,0,1,0,7.99307Z" transform="translate(-202.34518 -187.56114)" fill="#ccc"/><path d="M993.65829,712.43886H713.90113a3.99653,3.99653,0,0,1,0-7.99306H993.65829a3.99653,3.99653,0,0,1,0,7.99306Z" transform="translate(-202.34518 -187.56114)" fill="#ccc"/></svg></div>
+
+
+                    <div class="right hiddenRight">
+                        <p class="BRUHMOMENT">Set sail on unforgettable adventures with on our cruises, offering a collection of scenic and thrilling cruise experiences that promise to elevate your travel journey.</p>
+                    </div>
+                </div>
+            </section>
+            <section class="mconald" style="background-color: #f0f0f0;  box-shadow: inset 0 0px 10px rgba(0, 0, 0, 0.1); margin:0; padding:0;">
+                <div class="wrapper">
+                    <article class="item">
+                        <img src="images/cruise1.png" alt="Card Image">
+                        <h3><a href="#">The ONE PIECE!</a></h3>
+                        <p>Lorem ipsum dolor sit amet, deserunt  est.</p>
+                        <a href="#">Read more</a>
+                    </article>
+                    <article class="item">
+                        <img src="images/cruise2.png" alt="Card Image">
+                        <h3><a href="#">Jack Sparrow</a></h3>
+                        <p>Lorem ipsum dolor sit amet, deserunt  est.</p>
+                        <a href="#">Read more</a>
+                    </article>
+                    <article class="item">
+                        <img src="images/cruise1.png" alt="Card Image">
+                        <h3><a href="#">another boat</a></h3>
+                        <p>Lorem ipsum dolor sit amet, deserunt  est.</p>
+                        <a href="#">Read more</a>
+                    </article>
+                    <article class="item">
+                        <img src="images/cruise2.png" alt="Card Image">
+                        <h3><a href="#">titanic</a></h3>
+                        <p>Lorem ipsum dolor sit amet, deserunt  est.</p>
+                        <a href="#">Read more</a>
+                    </article>
+                    <article class="item">
+                        <img src="images/cruise1.png" alt="Card Image">
+                        <h3><a href="#">i am running out of ideas</a></h3>
+                        <p>Lorem ipsum dolor sit amet, deserunt  est.</p>
+                        <a href="#">Read more</a>
+                    </article>
+                    <article class="item">
+                        <img src="images/cruise2.png" alt="Card Image">
+                        <h3><a href="#">the lamp is low</a></h3>
+                        <p>Lorem ipsum dolor sit amet, deserunt  est.</p>
+                        <a href="#">Read more</a>
+                    </article>
+
+                </div>
+            </section>
+
+            <section class="footer">
+                <div class="social">
+                    <a href="#"><i class="fa fa-envelope"></i></a>
+                    <a href="#"><i class="fa-brands fa-github"></i></a>
+                    <a href="#"><i class="fa-brands fa-discord"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                </div>
+
+                <ul class="list">
+
+                    <li><a  href="#">Home</a></li>
+                    <li> <a href="#">Package Tours</a></li>
+                    <li> <a href="#">Rediscover Singapore</a></li>
+                    <li><a href="#">Cruises</a></li> 
+                    <li><a href="#">Contact us</a></li> 
+
+                </ul>
+                <p class="copyright">
+                    World Xplore © 2099
+                </p>
+
+
+            </section>          
+
+
+
+
+
+
+
+            <script>
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach((entry) => {
+                            console.log(entry);
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('show');
+                            } else {
+                                entry.target.classList.remove('show');
+                            }
+                        });
+                    });
+
+                    const hiddenElements = document.querySelectorAll('.hidden');
+                    hiddenElements.forEach((el) => observer.observe(el));
+                });
+
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach((entry) => {
+                            console.log(entry);
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('show');
+                            } else {
+                                entry.target.classList.remove('show');
+                            }
+                        });
+                    });
+
+                    const hiddenElements = document.querySelectorAll('.hiddenLeft');
+                    hiddenElements.forEach((el) => observer.observe(el));
+                });
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach((entry) => {
+                            console.log(entry);
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('show');
+                            } else {
+                                entry.target.classList.remove('show');
+                            }
+                        });
+                    });
+
+                    const hiddenElements = document.querySelectorAll('.hiddenRight');
+                    hiddenElements.forEach((el) => observer.observe(el));
+                });
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach((entry) => {
+                            console.log(entry);
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('show');
+                            } else {
+                                entry.target.classList.remove('show');
+                            }
+                        });
+                    });
+
+                    const hiddenElements = document.querySelectorAll('.hiddenUp');
+                    hiddenElements.forEach((el) => observer.observe(el));
+                });
+            </script>
+
+            <script>const hamburger = document.querySelector(".hamburger");
+                const navMenu = document.querySelector(".nav-menu");
+
+                hamburger.addEventListener("click", mobileMenu);
+
+                function mobileMenu() {
+                    hamburger.classList.toggle("active");
+                    navMenu.classList.toggle("active");
+                }
+
+                const navLink = document.querySelectorAll(".nav-link");
+
+                navLink.forEach(n => n.addEventListener("click", closeMenu));
+
+                function closeMenu() {
+                    hamburger.classList.remove("active");
+                    navMenu.classList.remove("active");
+                }</script>
+        </body>
+    </html>
